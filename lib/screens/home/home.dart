@@ -1,5 +1,6 @@
-import 'package:flyr/pages/profile.dart';
-import 'package:flyr/pages/settings.dart';
+import 'package:flyr/screens/home/add_layover.dart';
+import 'package:flyr/screens/home/profile.dart';
+import 'package:flyr/screens/home/settings.dart';
 import 'package:flutter/material.dart';
 
 import 'chat.dart';
@@ -32,7 +33,9 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () {
+          addLayover(context);
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(

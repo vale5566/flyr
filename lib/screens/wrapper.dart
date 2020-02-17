@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flyr/models/user.dart';
-import 'package:flyr/pages/home.dart';
+import 'package:flyr/screens/home/home.dart';
 import 'package:flyr/screens/authenticate/authenticate.dart';
 import 'package:provider/provider.dart';
 

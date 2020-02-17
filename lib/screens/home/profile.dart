@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flyr/services/auth.dart';
+import 'package:flyr/services/database.dart';
+import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -11,7 +14,9 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return StreamProvider<QuerySnapshot>.value(
+        value: DatabaseService().users,
+    child: Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
       ),
@@ -23,6 +28,6 @@ class _ProfileState extends State<Profile> {
           },
         ),
       ),
-    );
+    ));
   }
 }

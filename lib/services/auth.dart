@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flyr/models/user.dart';
+import 'package:flyr/services/database.dart';
 
 class AuthService {
 
@@ -12,9 +13,7 @@ class AuthService {
 
   // auth change user stream
   Stream<User> get user {
-    return _auth.onAuthStateChanged
-    //.map((FirebaseUser user) => _userFromFirebaseUser(user));
-        .map(_userFromFirebaseUser);
+    return _auth.onAuthStateChanged.map(_userFromFirebaseUser);
   }
 
   // sign in anon
@@ -46,6 +45,9 @@ class AuthService {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
+
+
+      await DatabaseService(uid: user.uid).updateUserData("new User", 0);
       return _userFromFirebaseUser(user);
     } catch (error) {
       print(error.toString());

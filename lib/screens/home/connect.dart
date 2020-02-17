@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flyr/data/airports.dart';
+import 'package:flyr/models/layover.dart';
+import 'package:flyr/services/database.dart';
+import 'package:provider/provider.dart';
 
 class Connect extends StatefulWidget {
   @override
@@ -8,14 +12,18 @@ class Connect extends StatefulWidget {
 class _ConnectState extends State<Connect> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Connect'),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.search), onPressed: () {
-            showSearch(context: context, delegate: DataSearch());
-          })
-        ],
+    return StreamProvider<List<Layover>>.value(
+      value: DatabaseService().layovers,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Connect'),
+          actions: <Widget>[
+            IconButton(icon: Icon(Icons.search), onPressed: () {
+              showSearch(context: context, delegate: DataSearch());
+            })
+          ],
+        ),
+        //body: LayoverList(),
       ),
     );
   }
@@ -23,37 +31,7 @@ class _ConnectState extends State<Connect> {
 
 class DataSearch extends SearchDelegate<String> {
 
-  final airports = [
-    "Berlin (BER)",
-    "München (MUC)",
-    "Frankfurt am Main (FRA)",
-    "Hamburg International (HAM)",
-    "Düsseldorf (DUS)",
-    "Stuttgart (STR)",
-    "Köln (CGN)",
-    "Hannover (HAJ)",
-    "Nürnberg (NUE)",
-    "Dresden (DRS)",
-    "Leipzig (LEJ)",
-    "Bremen (BRE)",
-    "Münster Osnabrück (FMO)",
-    "Friedrichshafen (FDH)",
-    "Dortmund (DTM)",
-    "Palma de Mallorca (PMI)",
-    "Istanbul (IST)",
-    "London-Heathrow (LHR)",
-    "Thessaloniki (SKG)",
-    "New York (JFK)",
-    "Wien (VIE)",
-    "Zürich (ZRH)",
-    "Barcelona (BCN)",
-    "Bangkok (BKK)",
-    "Amsterdam Schiphol (AMS)",
-    "Lissabon (LIS)",
-    "Madrid (MAD)",
-    "Shanghai (PVG)",
-    "Taipeh (TPE)"
-  ];
+  final airports = airportsArray;
 
   @override
   List<Widget> buildActions(BuildContext context) {
