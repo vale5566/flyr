@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flyr/data/airports.dart';
+import 'package:intl/intl.dart';
 
 final _formKey = GlobalKey<FormState>();
 
@@ -7,10 +10,12 @@ final airports = airportsArray;
 
 void addLayover(context) {
   DateTime currentDate = DateTime.now();
-  String airport = "select Airport";
+  String airport = "select airport";
+  DateTime pickedStart;
+  DateTime pickedEnd;
 
   Future<Null> _selectStartDate(BuildContext context) async {
-    final DateTime pickedStart = await showDatePicker(
+    pickedStart = await showDatePicker(
         context: context,
         initialDate: currentDate,
         firstDate: currentDate,
@@ -18,7 +23,7 @@ void addLayover(context) {
   }
 
   Future<Null> _selectEndDate(BuildContext context) async {
-    final DateTime pickedEnd = await showDatePicker(
+    pickedEnd = await showDatePicker(
         context: context,
         initialDate: currentDate,
         firstDate: currentDate,
@@ -34,16 +39,16 @@ void addLayover(context) {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                DropdownButton<String>(
+                DropdownButtonFormField<String>(
+                    value: airport,
                     items: airportsArray.map((String airport) {
                       return new DropdownMenuItem<String>(
                         value: airport,
                         child: new Text(airport),
                       );
                     }).toList(),
-                    onChanged: (String newValue) {
-                      airport = newValue;
-                    }),
+                    onChanged:
+                        (String newValue) {airport = newValue;}),
                 RaisedButton(
                   child: Text("Pick Start Date"),
                   onPressed: () => _selectStartDate(context),
@@ -54,7 +59,31 @@ void addLayover(context) {
                 ),
                 RaisedButton(
                   child: Text("Submit"),
-                  onPressed: () {},
+                  onPressed: () async {
+                    var formatter = DateFormat("d MMMM");
+                    String formattedPickedStart = formatter.format(pickedStart);
+                    String formattedPickedEnd = formatter.format(pickedEnd);
+                    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+                    String name;
+                    int age;
+                    Firestore.instance.collection("users").document(user.uid).get().then((docSnap) {
+                      name = docSnap["name"];
+                      age = docSnap["age"];
+                    });
+                    Firestore.instance
+                        .collection("layovers")
+                        .add({
+                          "airport": airport,
+                          "startDate": formattedPickedStart,
+                          "endDate": formattedPickedEnd,
+                          "name": name,
+                           "age": age,
+                        })
+                        .then((result) => {
+                              Navigator.pop(context),
+                            })
+                        .catchError((err) => print(err));
+                  },
                 ),
               ],
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flyr/models/layover.dart';
+import 'package:flyr/screens/home/layover_tile.dart';
 import 'package:provider/provider.dart';
 
 class LayoverList extends StatefulWidget {
@@ -11,13 +12,13 @@ class _LayoverListState extends State<LayoverList> {
   @override
   Widget build(BuildContext context) {
 
-    final layovers = Provider.of<QuerySnapshot>(context);
-    for(var doc in layovers.documents) {
-      print(doc.data);
-    }
+    final layovers = Provider.of<List<Layover>>(context) ?? [];
 
-    return Container(
-
+    return ListView.builder(
+      itemCount: layovers.length,
+      itemBuilder: (context, index) {
+        return LayoverTile(layover: layovers[index]);
+      },
     );
   }
 }

@@ -1,4 +1,5 @@
 final airportsArray = [
+  "select airport",
   "Berlin (BER)",
   "München (MUC)",
   "Frankfurt am Main (FRA)",

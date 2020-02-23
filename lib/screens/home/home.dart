@@ -27,6 +27,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: PageStorage(
         child: currentScreen,
         bucket: bucket,

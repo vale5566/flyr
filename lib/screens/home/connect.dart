@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flyr/data/airports.dart';
 import 'package:flyr/models/layover.dart';
+import 'package:flyr/screens/home/layover_list.dart';
 import 'package:flyr/services/database.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +24,7 @@ class _ConnectState extends State<Connect> {
             })
           ],
         ),
-        //body: LayoverList(),
+        body: LayoverList(),
       ),
     );
   }

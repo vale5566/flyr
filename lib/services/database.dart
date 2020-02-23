@@ -5,11 +5,11 @@ class DatabaseService {
 
   final String uid;
   DatabaseService({this.uid});
-  final CollectionReference UserCollection = Firestore.instance.collection("users");
-  final CollectionReference LayoverCollection = Firestore.instance.collection("layovers");
+  final CollectionReference userCollection = Firestore.instance.collection("users");
+  final CollectionReference layoverCollection = Firestore.instance.collection("layovers");
 
   Future updateUserData(String name, int age) async {
-    return await UserCollection.document(uid).setData({
+    return await userCollection.document(uid).setData({
       "name": name,
       "age": age,
     });
@@ -18,20 +18,20 @@ class DatabaseService {
   List<Layover> _layoverListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
       return Layover(
-        airport: doc.data['airports'] ?? '',
+        airport: doc.data['airport'] ?? '',
         name: doc.data['name'] ?? '',
         age: doc.data['age'] ?? 0,
         startDate: doc.data['startDate'] ?? '',
-        endDate: doc.data['endDate'] ?? ''
+        endDate: doc.data['endDate'] ?? '',
       );
     }).toList();
   }
 
   Stream<QuerySnapshot> get users {
-    return UserCollection.snapshots();
+    return userCollection.snapshots();
   }
 
   Stream<List<Layover>> get layovers {
-    return LayoverCollection.snapshots().map(_layoverListFromSnapshot);
+    return layoverCollection.snapshots().map(_layoverListFromSnapshot);
   }
 }
