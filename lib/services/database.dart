@@ -1,12 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flyr/models/layover.dart';
+import 'package:flyr/models/user.dart';
 
 class DatabaseService {
-
   final String uid;
+
   DatabaseService({this.uid});
-  final CollectionReference userCollection = Firestore.instance.collection("users");
-  final CollectionReference layoverCollection = Firestore.instance.collection("layovers");
+
+  final CollectionReference userCollection =
+      Firestore.instance.collection("users");
+  final CollectionReference layoverCollection =
+      Firestore.instance.collection("layovers");
 
   Future updateUserData(String name, int age) async {
     return await userCollection.document(uid).setData({
@@ -27,8 +31,14 @@ class DatabaseService {
     }).toList();
   }
 
-  Stream<QuerySnapshot> get users {
-    return userCollection.snapshots();
+  Stream<User> get users {
+    return userCollection.document(uid).snapshots().map((doc) {
+      return User(
+        uid: uid,
+        name: doc.data["name"],
+        age: doc.data["age"],
+      );
+    });
   }
 
   Stream<List<Layover>> get layovers {

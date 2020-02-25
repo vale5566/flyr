@@ -48,7 +48,9 @@ void addLayover(context) {
                       );
                     }).toList(),
                     onChanged:
-                        (String newValue) {airport = newValue;}),
+                        (String newValue) {
+                      airport = newValue;
+                    }),
                 RaisedButton(
                   child: Text("Pick Start Date"),
                   onPressed: () => _selectStartDate(context),
@@ -57,32 +59,39 @@ void addLayover(context) {
                   child: Text("Pick End Date"),
                   onPressed: () => _selectEndDate(context),
                 ),
-                RaisedButton(
-                  child: Text("Submit"),
+                RaisedButton.icon(
+                  label: Text("Submit"),
+                  icon: Icon(Icons.send),
+                  color: Colors.amber,
                   onPressed: () async {
                     var formatter = DateFormat("d MMMM");
                     String formattedPickedStart = formatter.format(pickedStart);
                     String formattedPickedEnd = formatter.format(pickedEnd);
-                    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+                    FirebaseUser user = await FirebaseAuth.instance
+                        .currentUser();
                     String name;
                     int age;
-                    Firestore.instance.collection("users").document(user.uid).get().then((docSnap) {
+                    Firestore.instance.collection("users")
+                        .document(user.uid)
+                        .get()
+                        .then((docSnap) {
                       name = docSnap["name"];
                       age = docSnap["age"];
-                    });
+                    }).then((result) => {
                     Firestore.instance
                         .collection("layovers")
                         .add({
-                          "airport": airport,
-                          "startDate": formattedPickedStart,
-                          "endDate": formattedPickedEnd,
-                          "name": name,
-                           "age": age,
-                        })
+                    "airport": airport,
+                    "startDate": formattedPickedStart,
+                    "endDate": formattedPickedEnd,
+                    "name": name,
+                    "age": age,
+                    })
                         .then((result) => {
-                              Navigator.pop(context),
-                            })
-                        .catchError((err) => print(err));
+                    Navigator.pop(context),
+                    })
+                        .catchError((err) => print(err))
+                    });
                   },
                 ),
               ],
