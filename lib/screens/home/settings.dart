@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flyr/services/auth.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -6,11 +7,19 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  final AuthService _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
-     return Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
+      ),
+      body: RaisedButton(
+        child: Text("Logout"),
+        onPressed: () async {
+          await _auth.signOut();
+        },
       ),
     );
   }
