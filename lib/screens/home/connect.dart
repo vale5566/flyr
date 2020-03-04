@@ -19,9 +19,11 @@ class _ConnectState extends State<Connect> {
         appBar: AppBar(
           title: Text('Connect'),
           actions: <Widget>[
-            IconButton(icon: Icon(Icons.search), onPressed: () {
-              showSearch(context: context, delegate: DataSearch());
-            })
+            IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () {
+                  showSearch(context: context, delegate: DataSearch());
+                })
           ],
         ),
         body: LayoverList(),
@@ -31,14 +33,22 @@ class _ConnectState extends State<Connect> {
 }
 
 class DataSearch extends SearchDelegate<String> {
-
-  final airports = airportsArray;
+  var airports = airportsSearchArray;
+  static String selectedAirport;
 
   @override
   List<Widget> buildActions(BuildContext context) {
-    return [IconButton(icon: Icon(Icons.clear), onPressed: () {
-      query = "";
-    })];
+    return [
+      IconButton(
+          icon: Icon(Icons.clear),
+          onPressed: () {
+            query = "";
+          })
+    ];
+  }
+  @override
+  Widget buildResults(BuildContext context) {
+    return null;
   }
 
   @override
@@ -52,21 +62,23 @@ class DataSearch extends SearchDelegate<String> {
   }
 
   @override
-  Widget buildResults(BuildContext context) {
-  }
-
-  @override
   Widget buildSuggestions(BuildContext context) {
-    final suggestionList = query.isEmpty ? airports : airports.where((p) => p.contains(RegExp(query, caseSensitive: false))).toList();
+    final suggestionList = query.isEmpty
+        ? airports
+        : airports
+            .where((p) => p.contains(RegExp(query, caseSensitive: false)))
+            .toList();
 
-    return ListView.builder(itemBuilder: (context,index)=>ListTile(
-      onTap: () {
-        showResults(context);
-      },
-      leading: Icon(Icons.local_airport),
-      title: Text(suggestionList[index]),
-    ),
-    itemCount: suggestionList.length,
+    return ListView.builder(
+      itemBuilder: (context, index) => ListTile(
+        onTap: () {
+          selectedAirport = suggestionList[index];
+          close(context, null);
+        },
+        leading: Icon(Icons.local_airport),
+        title: Text(suggestionList[index]),
+      ),
+      itemCount: suggestionList.length,
     );
   }
 }

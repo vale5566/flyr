@@ -4,7 +4,6 @@ import 'package:flyr/models/user.dart';
 import 'package:flyr/services/database.dart';
 import 'package:flyr/shared/loading.dart';
 import 'package:provider/provider.dart';
-import 'package:flyr/shared/constants.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -55,23 +54,9 @@ class _ProfileState extends State<Profile> {
                     RaisedButton(
                         child: Text("Save"),
                         onPressed: () async {
-                          if (_currentName == null && _currentAge == null) {
-                          } else {
-                            if (_currentAge == null) {
-                              await DatabaseService(uid: user.uid)
-                                  .updateUserData(_currentName, userData.age);
-                            } else {
-                              if (_currentName == null) {
-                                await DatabaseService(uid: user.uid)
-                                    .updateUserData(userData.name, _currentAge);
-                              } else {
-                                await DatabaseService(uid: user.uid)
-                                    .updateUserData(_currentName, _currentAge)
-                                    .whenComplete(() {
-                                });
-                              }
-                            }
-                          }
+                          DatabaseService(uid: user.uid).updateUserData(
+                              _currentName ?? userData.name,
+                              _currentAge ?? userData.age);
                         }),
                   ],
                 ),

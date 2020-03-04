@@ -1,4 +1,37 @@
-final airportsArray = [
+final airportsSearchArray = [
+  "Show all Airports",
+  "Berlin (BER)",
+  "München (MUC)",
+  "Frankfurt am Main (FRA)",
+  "Hamburg International (HAM)",
+  "Düsseldorf (DUS)",
+  "Stuttgart (STR)",
+  "Köln (CGN)",
+  "Hannover (HAJ)",
+  "Nürnberg (NUE)",
+  "Dresden (DRS)",
+  "Leipzig (LEJ)",
+  "Bremen (BRE)",
+  "Münster Osnabrück (FMO)",
+  "Friedrichshafen (FDH)",
+  "Dortmund (DTM)",
+  "Palma de Mallorca (PMI)",
+  "Istanbul (IST)",
+  "London-Heathrow (LHR)",
+  "Thessaloniki (SKG)",
+  "New York (JFK)",
+  "Wien (VIE)",
+  "Zürich (ZRH)",
+  "Barcelona (BCN)",
+  "Bangkok (BKK)",
+  "Amsterdam Schiphol (AMS)",
+  "Lissabon (LIS)",
+  "Madrid (MAD)",
+  "Shanghai (PVG)",
+  "Taipeh (TPE)"
+];
+
+final airportsCreateArray = [
   "select airport",
   "Berlin (BER)",
   "München (MUC)",

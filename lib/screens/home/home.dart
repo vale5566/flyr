@@ -13,7 +13,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   // Properties & Variables needed
-
   int currentTab = 0; // to keep track of active tab index
   final List<Widget> screens = [
     Connect(),
@@ -22,7 +21,7 @@ class _HomeState extends State<Home> {
     Settings(),
   ]; // to store nested tabs
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = Connect(); // Our first view in viewport
+  Widget currentScreen = Connect();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +34,11 @@ class _HomeState extends State<Home> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          addLayover(context);
+          addLayover(
+              context,
+              (newAirport) => {
+                    setState(() => {newAirport})
+                  });
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -54,8 +57,7 @@ class _HomeState extends State<Home> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen =
-                            Connect();
+                        currentScreen = Connect();
                         currentTab = 0;
                       });
                     },
@@ -79,8 +81,7 @@ class _HomeState extends State<Home> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen =
-                            Chat();
+                        currentScreen = Chat();
                         currentTab = 1;
                       });
                     },
@@ -112,8 +113,7 @@ class _HomeState extends State<Home> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen =
-                            Profile();
+                        currentScreen = Profile();
                         currentTab = 2;
                       });
                     },
@@ -137,8 +137,7 @@ class _HomeState extends State<Home> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen =
-                            Settings();
+                        currentScreen = Settings();
                         currentTab = 3;
                       });
                     },
@@ -160,7 +159,6 @@ class _HomeState extends State<Home> {
                   )
                 ],
               )
-
             ],
           ),
         ),
