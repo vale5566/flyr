@@ -14,7 +14,8 @@ class _LayoverListState extends State<LayoverList> {
   Widget build(BuildContext context) {
     final layovers = Provider.of<List<Layover>>(context) ?? [];
     var filteredLayovers;
-    if (DataSearch.selectedAirport == null || DataSearch.selectedAirport == "Show all Airports") {
+    if (DataSearch.selectedAirport == null ||
+        DataSearch.selectedAirport == "Show all Airports") {
       filteredLayovers = layovers;
     } else {
       filteredLayovers = layovers
@@ -25,6 +26,11 @@ class _LayoverListState extends State<LayoverList> {
     return ListView.builder(
       itemCount: filteredLayovers.length,
       itemBuilder: (context, index) {
+        return GestureDetector(
+          child: LayoverTile(layover: filteredLayovers[index]),
+          onTap: () => Scaffold.of(context)
+              .showSnackBar(SnackBar(content: Text("Coming soon"))),
+        );
         return LayoverTile(layover: filteredLayovers[index]);
       },
     );
