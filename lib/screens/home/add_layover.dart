@@ -87,11 +87,13 @@ void addLayover(BuildContext context, AirportCallback onNewValue) {
                                   "age": age,
                                 })
                                 .then((result) => {
-                                      Navigator.pop(context),
+                                      Navigator.of(context, rootNavigator: true)
+                                          .pop(),
                                     })
                                 .catchError((err) => print(err))
                                 .then((result) => {
-                                      Navigator.pop(context),
+                                      Navigator.of(context, rootNavigator: true)
+                                          .pop(),
                                     })
                           });
                 },
