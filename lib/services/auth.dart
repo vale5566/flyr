@@ -3,7 +3,6 @@ import 'package:flyr/models/user.dart';
 import 'package:flyr/services/database.dart';
 
 class AuthService {
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // create user obj based on firebase user
@@ -31,7 +30,8 @@ class AuthService {
   // sign in with email and password
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
-      AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      AuthResult result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
       FirebaseUser user = result.user;
       return user;
     } catch (error) {
@@ -43,9 +43,9 @@ class AuthService {
   // register with email and password
   Future registerWithEmailAndPassword(String email, String password) async {
     try {
-      AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      AuthResult result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
       FirebaseUser user = result.user;
-
 
       await DatabaseService(uid: user.uid).updateUserData("new User", 0);
       return _userFromFirebaseUser(user);
@@ -64,5 +64,4 @@ class AuthService {
       return null;
     }
   }
-
 }

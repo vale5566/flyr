@@ -1,3 +1,4 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flyr/models/layover.dart';
 import 'package:flyr/screens/home/connect.dart';
@@ -27,11 +28,14 @@ class _LayoverListState extends State<LayoverList> {
       itemCount: filteredLayovers.length,
       itemBuilder: (context, index) {
         return GestureDetector(
-          child: LayoverTile(layover: filteredLayovers[index]),
-          onTap: () => Scaffold.of(context)
-              .showSnackBar(SnackBar(content: Text("Coming soon"))),
-        );
-        return LayoverTile(layover: filteredLayovers[index]);
+            child: LayoverTile(layover: filteredLayovers[index]),
+            onTap: () => Flushbar(
+                message: "COMING SOON",
+                duration: Duration(seconds: 3),
+                backgroundGradient: LinearGradient(
+                  colors: [Colors.teal, Colors.tealAccent],
+                )).show(context));
+        //return LayoverTile(layover: filteredLayovers[index]);
       },
     );
   }

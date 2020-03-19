@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flyr/data/airports.dart';
 import 'package:intl/intl.dart';
@@ -8,7 +9,8 @@ typedef AirportCallback(String);
 
 void addLayover(BuildContext context, AirportCallback onNewValue) {
   var airports = airportsCreateArray;
-  DateTime currentDate = DateTime.now();
+  DateTime now = new DateTime.now();
+  DateTime currentDate = DateTime(now.year, now.month, now.day);
   String airport = "select airport";
   DateTime pickedStart;
   DateTime pickedEnd;
@@ -31,7 +33,7 @@ void addLayover(BuildContext context, AirportCallback onNewValue) {
 
   showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: Text("Add Layover"),
           elevation: 24.0,
@@ -59,45 +61,65 @@ void addLayover(BuildContext context, AirportCallback onNewValue) {
                 onPressed: () => _selectEndDate(context),
               ),
               RaisedButton.icon(
-                label: Text("Submit"),
-                icon: Icon(Icons.send),
-                color: Colors.amber,
-                onPressed: () async {
-                  var formatter = DateFormat("d MMMM");
-                  String formattedPickedStart = formatter.format(pickedStart);
-                  String formattedPickedEnd = formatter.format(pickedEnd);
-                  FirebaseUser user = await FirebaseAuth.instance.currentUser();
-                  String name;
-                  int age;
-                  Firestore.instance
-                      .collection("users")
-                      .document(user.uid)
-                      .get()
-                      .then((docSnap) {
-                    name = docSnap["name"];
-                    age = docSnap["age"];
-                  }).then((result) => {
-                            Firestore.instance
-                                .collection("layovers")
-                                .add({
-                                  "airport": airport,
-                                  "startDate": formattedPickedStart,
-                                  "endDate": formattedPickedEnd,
-                                  "name": name,
-                                  "age": age,
-                                })
-                                .then((result) => {
-                                      Navigator.of(context, rootNavigator: true)
-                                          .pop(),
-                                    })
-                                .catchError((err) => print(err))
-                                .then((result) => {
-                                      Navigator.of(context, rootNavigator: true)
-                                          .pop(),
-                                    })
-                          });
-                },
-              ),
+                  label: Text("Submit"),
+                  icon: Icon(Icons.send),
+                  color: Colors.amber,
+                  onPressed: () async {
+                    if (pickedEnd == null || pickedStart == null || airport == "select airport") {
+                      Flushbar(
+                        message: "Something is missing..",
+                        duration: Duration(seconds: 3),
+                      ).show(context);
+                    } else {
+                      var formatter = DateFormat("d MMMM");
+                      String formattedPickedStart =
+                          formatter.format(pickedStart);
+                      String formattedPickedEnd = formatter.format(pickedEnd);
+                      FirebaseUser user =
+                          await FirebaseAuth.instance.currentUser();
+                      String name;
+                      int age;
+                      if (pickedStart.isBefore(pickedEnd)) {
+                        Firestore.instance
+                            .collection("users")
+                            .document(user.uid)
+                            .get()
+                            .then((docSnap) {
+                          name = docSnap["name"];
+                          age = docSnap["age"];
+                        }).then((result) => {
+                                  Firestore.instance
+                                      .collection("layovers")
+                                      .add({
+                                        "airport": airport,
+                                        "startDate": formattedPickedStart,
+                                        "endDate": formattedPickedEnd,
+                                        "name": name,
+                                        "age": age,
+                                      })
+                                      .then((result) => {
+                                            Navigator.of(dialogContext,
+                                                    rootNavigator: true)
+                                                .pop(),
+                                          })
+                                      .catchError((err) => print(err))
+                                      .then((result) => {
+                                            Navigator.of(dialogContext,
+                                                    rootNavigator: true)
+                                                .pop(),
+                                          })
+                                });
+                      } else {
+                        Flushbar(
+                          icon: Icon(Icons.info_outline),
+                          margin: EdgeInsets.all(8),
+                          borderRadius: 8,
+                          message: "End Date is before Start Date",
+                          duration: Duration(seconds: 3),
+                        ).show(context);
+                      }
+                    }
+                  }),
             ],
           ),
         );

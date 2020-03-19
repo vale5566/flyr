@@ -1,7 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:flyr/screens/home/add_layover.dart';
 import 'package:flyr/screens/home/profile.dart';
 import 'package:flyr/screens/home/settings.dart';
-import 'package:flutter/material.dart';
 
 import 'chat.dart';
 import 'connect.dart';
