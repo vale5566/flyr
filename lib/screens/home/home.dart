@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flyr/screens/home/add_layover.dart';
+import 'package:flyr/screens/home/add_layover_dialog.dart';
 import 'package:flyr/screens/home/profile.dart';
 import 'package:flyr/screens/home/settings.dart';
 
@@ -23,6 +23,8 @@ class _HomeState extends State<Home> {
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currentScreen = Connect();
 
+  String airport;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,11 +36,11 @@ class _HomeState extends State<Home> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          addLayover(
-              context,
-              (newAirport) => {
-                    setState(() => {newAirport})
-                  });
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AddLayoverDialog();
+              });
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
